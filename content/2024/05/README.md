@@ -77,7 +77,7 @@ En este ejemplo, no podemos predecir qué devolverán esta funciones porque depe
 
 Además, ¿qué sucede si alguien más cambia el valor de `i`? ¿Te gustaría buscar en Google que `string++` es?
 
-###
+### 
 
 ### Código asincrónico
 
@@ -206,7 +206,7 @@ Ahora es el momento de pasar a los conceptos funcionales. Analicémoslos en pare
 
 > Si intentas realizar efectos y lógica al mismo tiempo, puedes crear efectos secundarios ocultos que provquen errores en la lógica. Mantén las funciones pequeñas. Haz una cosa a la vez y hazla bien.
 
-####
+#### 
 
 #### Composición
 
@@ -239,6 +239,133 @@ La segunda función es un término de FP `filter` que `filter` significa filtrar
 La última función es simplemente un `map`.`map` es otro termino de FP, una transformación 1:1 de una lista a una nueva versión de esa lista. En este caso, estamos recorriendo la lista de archivos y devolviendo la clave `name` de cada uno de ellos.
 
 Ahora podemos combinarlos juntos:
+
+
+
+```javascript
+const getSortedPDFFileNames = lodash.flow(
+    getPdfFiles,
+    getFileNames,
+    lodash.sortBy
+);
+// alternative
+const getSortedPdfFileNames = (files) => (
+    lodash.sortBy(
+        getFileNames(
+            getPdfFiles(files)
+        )
+    )
+);
+```
+
+Ahora bien, ambas funciones son equivalentes. Toman una lista de archivos, filtran los archivos PDF, obtiene sus nombres y devuelven una lista ordenada de nombres de archivos.
+
+`lodash.flow` Tiene algunas optimizaciones, pero la segunda sintaxis puede resultar más legible.
+
+
+
+Pasemos al siguiente conjunto de conceptos.
+
+
+
+### Inmutabilidad
+
+> la verdadera constante es el cambio. La mutación oculta el cambio. El cambio oculto manifiesta el caos. Por eso, los sabios abrazan la historia.
+
+### Memorización
+
+> La memorización es una tecnica de optimizacion utilizada principalmente para acelerar los programas informáticos almacenando los resultados de llamadas de funciones costosas y devolviendo el resultado en caché cuando se producen nuevamente las mismas entradas.
+
+Estas combinaciones se combinan muy bien. La inmutabilidad indica que nunca vamos a mutar un argumento, solo delvolver uno nuevo, y la memorización nos permite recordar los resultados. Veamos un ejemplo de combinación de ambos.
+
+
+
+```javascript
+function killSibling(wizard) {
+    return {
+        ...wizard,
+        numSibling: wizard.numSiblings - 1,
+    };
+}
+const killSiblingMemoized = lodash.memorize(killSibling);
+const ron = { name: "Ron Weasley", siblings: 6};
+const ronAfterFredDies = KillSiblingMemorized(ron);
+ron === ronAfterFredDies // false, he's a different person now.
+
+const ronAfterFredDiesAgain = killSiblingMemoized(ron);
+ronAfterFredDies === ronAfterFredDiesAgain // true
+```
+
+
+
+¿Que esta pasando aquí? Bueno, tenemos una función llamada `killSling` (oscura, lo sé), que toma un asistente. Copia el asistente y disminuye la cantidad de hermanos que tiene ese asistente. Ignoren los errores evidentes que hay aquí, quería mantener esto simple.
+
+
+
+Luego pasamos `KillSibling` a `lodash.memoriza`, lo que produce una nueva funcion llamada `killSiblingMemorized`. Ahora, cuando llamamos `killSiblingMemorized` a `ron`, devuelve un objeto completamente nuevo. Si relizamos una verificación de igualdad estricta, devuelce falso. Por supuesto que lo hace, su hermano murió, ahora es una persona diferente.
+
+
+
+Como hemos memorizado esto, si repetimos esta llamada `killSiblingMemorized`  obtenemos exactamente la misma versión que `ron` obtuvimos después de la primera llamda.
+
+
+
+Hemos cubierto mucho, ahora pasemos a algunos temas avanzados.
+
+
+
+---
+
+## Funciones de orden superior
+
+En matemáticas y ciencias de la computación, una **función de orden superior** es una función que realiza al menos una de las siguientes acciones:
+
+
+
+- Toma una o más funciones como argumentos (es decir, parámetros de procedimiento)
+
+- Devuelve una función como su resultado.
+
+Esto parece mucho más intimidante de lo que es en realidad. De hecho, apuesto a que has escrito algunas de estas cosas antes sin date cuenta.
+
+
+
+### Función que toma una función
+
+```javascript
+fetch('user', { userId: 1 }).theme((response) => {
+    persistUser(response);  
+})
+```
+
+Se trata simplemente **de devoluciones de llamadas.** Es este caso, `then` se trata de una función de orden superior que toma una función anónima como argunmento.
+
+### Función que devuelve una función
+
+```javascript
+function counterGenerator() {
+    let i = 0;
+    return function(){
+    console.log(++i)
+    }
+}
+
+// Usage
+const counter = counterGenerator();
+counter(); // => 1
+counter(); // => 2
+counter(); // => 3
+```
+
+Otra cosa que probablemente hayas hecho antes **son los cierres.** En este caso, `counterGenerator` se trata de una función de orden superior porque devuelve una función.
+
+Tanto `memoize` como `flow` eran funciones de orden superior que toman una función (o varias) como argumentos y devuelven una nueva función.
+
+---
+
+
+
+
 
 - [Siguente - ](./content/2024/06/README.md)
 
