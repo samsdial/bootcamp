@@ -1,6 +1,6 @@
 Bootcamp para fullStack Developer - [Inicio](https://github.com/samsdial/bootcamp/)
 
-[![N|Solid](/Users/samsara/pr/bootcamp/content/assets/makup.jpg)](https://nodesource.com/products/nsolid)
+![Imagen](../../assets/makup.jpg)
 
 # Fundamentos de programación funcional
 
@@ -77,7 +77,7 @@ En este ejemplo, no podemos predecir qué devolverán esta funciones porque depe
 
 Además, ¿qué sucede si alguien más cambia el valor de `i`? ¿Te gustaría buscar en Google que `string++` es?
 
-### 
+###
 
 ### Código asincrónico
 
@@ -206,7 +206,7 @@ Ahora es el momento de pasar a los conceptos funcionales. Analicémoslos en pare
 
 > Si intentas realizar efectos y lógica al mismo tiempo, puedes crear efectos secundarios ocultos que provquen errores en la lógica. Mantén las funciones pequeñas. Haz una cosa a la vez y hazla bien.
 
-#### 
+####
 
 #### Composición
 
