@@ -1,3 +1,5 @@
+- [Inicio](./README.md)
+
 # Fundamentos de programación funcional
 
 ### ¿Cuando en más util la programación funcional?
@@ -18,6 +20,9 @@ En el código anterior tenemos algunos tipos enumerados para un almacén de dato
 
 Esta capa funcional `convertUserMapToArray` convierte los datos de un formato que tiene sentido para la tienda a un formato que tiene sentido para la interfaz de usuario.
 
+- [Siguente - ](./content/2024/06/README.md)
+
 Aquí va el contenido de la entrada del blog. Puedes usar Markdown para agregar **negritas**, _cursivas_, [enlaces](https://github.com), y más.
+
 
 ![Imagen](../../assets/isotipo.png)
