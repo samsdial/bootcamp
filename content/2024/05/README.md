@@ -1,4 +1,6 @@
-- [Inicio](https://github.com/samsdial/bootcamp/)
+Bootcamp para fullStack Developer - [Inicio](https://github.com/samsdial/bootcamp/)
+
+[![N|Solid](/Users/samsara/pr/bootcamp/content/assets/makup.jpg)](https://nodesource.com/products/nsolid)
 
 # Fundamentos de programación funcional
 
@@ -57,8 +59,6 @@ console.log(arr); // [2, 3, 4]
 
 En el ejemplo anterior, cambiamos el valor de `arr` la referencia en la que se encuentra. Como resultado, no podemos predecir qué devolverá esta función en cualquier momento. ¿Qué sucede cuando al `arr` se le agotan los valores?
 
-
-
 ### Estado compartido
 
 Usando alguna forma de estado global
@@ -95,11 +95,7 @@ incrementAsync();
 
 Este merece una mención especial porque es una necesidad. Tenemos que hacer algunas cosas de forma asincrónica. Tenemos que accerder a las API  y optener datos.
 
-
-
 Esto me lleva de nuevo al punto que comenté antes. Los efectos secundarios no son malos en sí mismo, pero deben aislarse adecuadamente para que el código sea más predecible.
-
-
 
 ### Ejemplo de tiempo
 
@@ -115,8 +111,6 @@ function killParents(wizard) {
     wizard.parents = "Dead";
     return wizard;
 }
-
-
 ```
 
 ```javascript
@@ -153,19 +147,11 @@ console.log(d) // undefined
 
 Bueno, la primera función `clone` es una función pura y funciona como se esperaba. Produjo un nuevo objeto en una nueva referencia.
 
-
-
 `killParents` no es una función pura. Muta el argumento dado y marca al padre como muerto. Sin emgargo, devuelve el objeto, por lo que _parece_  que estamos ovjeniendo una nueva copia.
-
-
 
 `addScar` realmente no le importa. Muta el objeto original y luego no devuelve nada, por lo que `addScar(c)` devuelve `undefined` aunque también modifica `c`.
 
-
-
 Como resultado, `a` está apuntando a la referencia original, `b` y `c` está apuntando a la copia clonada (con padres muertos y una cicatriz), y  `d` no está apuntando a nada.
-
-
 
 ------
 
@@ -173,15 +159,86 @@ Como resultado, `a` está apuntando a la referencia original, `b` y `c` está ap
 
 El código declartivo descrive lo que hace
 
-
-
 El código imperativo describe cómo lo hace
 
+Si observamos los dos ejemplos de código anteriores, podemos ver un marcado contraste. El bloque superior está escrito como React y solo dice "queremos un contador en la página". Este códogo confía en React, la biblioteca decalrativa para hacerlo bien.
 
+El bloque inferior utiliza JS estándar. Busca Explícitamente un nodo DOM y lo actualiza. Si bien esto está bien para un ejemplo tan simple, no se escalára bien, ¿Qué sucede cuando queremos múltiples contadores en múltimples ubicaciones? React está listo para eso, con JS estándar tenemos mucho trabajo por hacer.
 
-Si observamos los dos ejemplos de código anteriores, podemos ver un marcado contraste. El bloque superior está escrito como React y solo dice ""
+Ahora buen, vale la pena señalar que el código declarativo siempre terminará compilándose o siendo procesado por algo imperativo. ¿Que quiero decir con eso? Bueno, _algo_ tien que ver con la mutación del DOM. En este caso, se trata de React. Incluso con lenguajes funcionales como Liso o Haskell, **_Eventualmente_** se compilan en código de máquina imperativo.
 
+#### Ejemplo
 
+##### Imperativo
+
+```javascript
+function getFileMapById(files) {
+    const fileMap = {};
+    for (let i=0; i<files.length; i++) {
+        const file = file[i];
+        fileMap[file.id] = file;
+    }
+    return fileMap;
+}
+```
+
+##### Declarativo
+
+```javascript
+function getFileMapById(files) {
+    return lodash.keyBy(files, 'id');
+}
+```
+
+Ahora bien, estas dos funciones logran exactamente lo mismo: toman una lista de archivos `files` y devuelven un diccionario de archivo donde la clave es `file.id`
+
+Pero el imperativo es más descuidado. Son 8 lineas de códogp en ligar de 3. También deja mucho  margen de error.
+
+¿Qué sucede si un archivo no tiene un `id`?¿Qué sucede si nos equivocamos en la cláusula de salida? Y un dato curioso: hay formas más rápidas de hacer bucles for (son feos), pero podemos confiar en que lodash los haga en segundo plano.
+
+----
+
+### Conceptos funcionales
+
+Ahora es el momento de pasar a los conceptos funcionales. Analicémoslos en pares: los dos promeros son **separación** y **composición**.
+
+#### Separación
+
+> Si intentas realizar efectos y lógica al mismo tiempo, puedes crear efectos secundarios ocultos que provquen errores en la lógica. Mantén las funciones pequeñas. Haz una cosa a la vez y hazla bien.
+
+#### 
+
+#### Composición
+
+> Planifique la composición. Escriba funciones cuyas salidas funcionen naturalmente comom entradas para muchas otras funciones. Mantenga las firmas de las funciones lo más simple posible.
+
+Saqué estas citas de un artículo llamado [El Tao de la inmutabilidad](./content/2024/06/README.md). Lo que estamos diciendo aquí es que queremos funciones pequeñas que se puedan encadenar fácilmente para formar funciones más grandes. Veamos un ejemplo:
+
+```javascript
+function sortFilesByName(files) {
+    return lodash.sortBy(files, 'name');
+}
+```
+
+```javascript
+function getPdfFiles(files) {
+    return lodash.filter(files, {extension: PDF});
+}
+```
+
+```javascript
+funtion getFileNames(files) {
+    return lodash.map(files, 'name');
+}
+```
+
+Estas tres funciones son muy sencillas. Toman un argumento y relizan una transformación sobre ese argumento. La primera función ordena la lista de archivos.
+
+La segunda función es un término de FP `filter` que `filter` significa filtrar hacia adentro. en ligar de hacia afuera. Por lo tanto, este código devuelve una matriz de archivos cuyas extensiones son PDF.
+
+La última función es simplemente un `map`.`map` es otro termino de FP, una transformación 1:1 de una lista a una nueva versión de esa lista. En este caso, estamos recorriendo la lista de archivos y devolviendo la clave `name` de cada uno de ellos.
+
+Ahora podemos combinarlos juntos:
 
 - [Siguente - ](./content/2024/06/README.md)
 

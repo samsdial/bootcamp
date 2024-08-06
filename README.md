@@ -8,6 +8,10 @@ Objetivo del módulo: conocer la programación y establecer las bases con Progra
 
 ## Lista - 01 programación
 
+| Tema                                  | Link                               |
+| ------------------------------------- | ---------------------------------- |
+| Fundamentos de programación funcional | [001](./content/2024/05/README.md) |
+
 - [Fundamentos de programación funcional Agosto 05 2024](./content/2024/05/README.md)
 - [Entrada de Julio 2024](./content/2024/06/README.md)
 
